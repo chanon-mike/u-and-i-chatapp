@@ -1,5 +1,5 @@
-function index() {
+const Home = () => {
   return <div>index</div>;
-}
+};
 
-export default index;
+export default Home;
