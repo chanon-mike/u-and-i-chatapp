@@ -1,20 +1,13 @@
-import axios from 'axios';
 import { FcGoogle } from 'react-icons/fc';
-import { loginWithGoogle } from '../../utils/login';
+import { loginWithGoogle, logout } from '../../utils/login';
 
 const Home = () => {
   const handleLogin = async () => {
     await loginWithGoogle();
   };
 
-  const fetchData = async () => {
-    const token = sessionStorage.getItem('accessToken');
-    const response = await axios.get('http://localhost:8000/test', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response.data);
+  const onLogout = async () => {
+    if (confirm('Logout?')) await logout();
   };
 
   return (
@@ -23,8 +16,8 @@ const Home = () => {
         <FcGoogle className="text-4xl " />
         <span className="pl-3 text-white text-2xl">Login with Google</span>
       </button>
-      <button className="flex rounded-lg p-4 bg-black " onClick={fetchData}>
-        <span className="pl-3 text-white text-2xl">Test login</span>
+      <button className="flex rounded-lg p-4 bg-black " onClick={onLogout}>
+        <span className="pl-3 text-white text-2xl">Logout</span>
       </button>
     </div>
   );
