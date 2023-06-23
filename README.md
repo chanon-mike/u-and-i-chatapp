@@ -1,4 +1,4 @@
-# UandI Chatapp
+# U&I Chatapp
 
 This is a real-time chat application built as my capstone project
 

@@ -4,9 +4,9 @@ const api_base = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
 const userBase = `${api_base}/api/users`;
 
-export const getMe = () => {
+export const getMe = async () => {
   try {
-    return axios
+    return await axios
       .get(userBase, {
         withCredentials: true,
       })

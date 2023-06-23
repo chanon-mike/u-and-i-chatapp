@@ -30,7 +30,7 @@ const ContextMenu = ({ options, cordinates, contextMenu, setContextMenu }: Conte
   }, [setContextMenu]);
 
   // Click event for each options, then callback correspondance function
-  const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, callback: () => null) => {
+  const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, callback: () => void) => {
     e.stopPropagation();
     setContextMenu(false);
     callback();

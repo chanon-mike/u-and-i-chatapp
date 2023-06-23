@@ -2,7 +2,7 @@ import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { userAtom } from '../../atom/user';
 
-import Avatar from '../../components/common/Avatar';
+import AvatarSettings from '../../components/common/AvatarSettings';
 import { Loading } from '../../components/common/Loading/Loading';
 
 const Home = () => {
@@ -48,7 +48,7 @@ const Home = () => {
               onChange={(e) => setBio(e.target.value)}
             />
           </form>
-          <Avatar type={'xl'} image={avatar} setImage={setAvatar} />
+          <AvatarSettings image={avatar} setImage={setAvatar} />
         </div>
       </div>
     </>
