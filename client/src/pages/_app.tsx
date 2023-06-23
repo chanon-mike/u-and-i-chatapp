@@ -1,7 +1,7 @@
 import type { AppPropsType } from 'next/dist/shared/lib/utils';
 import { useRouter, type Router } from 'next/router';
 import { useEffect } from 'react';
-import { AuthLoader } from '../components/AuthLoader';
+import { AuthLoader } from '../components/common/AuthLoader';
 import '../styles/globals.css';
 import { createAuth } from '../utils/firebase';
 

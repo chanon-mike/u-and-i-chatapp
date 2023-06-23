@@ -4,9 +4,10 @@ This is a real-time chat application built as my capstone project
 
 ## Features
 
-- [ ] Register account
-- [ ] Login
-- [ ] Logout
+- [x] Register account (Google account for now)
+- [x] Login
+- [x] Logout
+- [ ] Onboarding
 - [ ] Real-time chat
 - [ ] Add friends
 - [ ] Emoji message
@@ -18,6 +19,10 @@ This is a real-time chat application built as my capstone project
 - [ ] Message Time
 - [ ] Voice call
 - [ ] Video call
+
+### Nice-to-have
+
+- [ ] CSS animation on onboarding page
 
 ## Built with
 

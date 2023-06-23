@@ -1,6 +1,7 @@
 import type { User } from 'firebase/auth';
+import Image from 'next/image';
 import Link from 'next/link';
-import { logout } from '../../utils/login';
+import { logout } from '../../../utils/login';
 
 export const BasicHeader = ({ user }: { user: User }) => {
   const onLogout = async () => {
@@ -8,10 +9,10 @@ export const BasicHeader = ({ user }: { user: User }) => {
   };
 
   return (
-    <div className="h-10 bg-slate-200 border-b-2 border-white">
-      <div className="w max-w-5xl h-full m-auto p-5 flex items-center justify-between">
-        <Link href={'/'}>
-          {/* <Image src={staticPath.othello_header_png} height={40} width={160} alt="othello logo" /> */}
+    <div className="bg-slate-200 border-b-2 border-white h-16">
+      <div className="h-full m-auto p-5 flex items-center justify-between">
+        <Link className="flex items-center justify-between text-blue-950 font-bold" href="/">
+          <Image src="/uandi_no_text.png" height={80} width={80} alt="othello logo" />
           U&I ChatApp
         </Link>
 
@@ -26,7 +27,7 @@ export const BasicHeader = ({ user }: { user: User }) => {
           ) : (
             <HumanIcon size={18} fill="#555" />
           )} */}
-        <span className="font-bold text-gray-400 text-base cursor-pointer" onClick={onLogout}>
+        <span className="font-bold text-blue-950 text-base cursor-pointer" onClick={onLogout}>
           {user.displayName}
         </span>
       </div>

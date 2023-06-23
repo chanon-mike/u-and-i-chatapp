@@ -2,9 +2,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer } from 'react';
-import { getMe } from '../api';
-import { userAtom } from '../atom/user';
-import { createAuth } from '../utils/firebase';
+import { getMe } from '../../api';
+import { userAtom } from '../../atom/user';
+import { createAuth } from '../../utils/firebase';
 import { Loading } from './Loading/Loading';
 
 export const AuthLoader = () => {

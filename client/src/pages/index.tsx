@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai';
 import { userAtom } from '../atom/user';
-import { BasicHeader } from '../components/Header/Header';
-import { Loading } from '../components/Loading/Loading';
+import { BasicHeader } from '../components/common/BasicHeader/BasicHeader';
+import { Loading } from '../components/common/Loading/Loading';
 
 const Home = () => {
   const [user] = useAtom(userAtom);
@@ -11,7 +11,9 @@ const Home = () => {
   return (
     <>
       <BasicHeader user={user} />
-      <div>index</div>
+      <div className="bg-slate-900 h-screen w-screen flex flex-col items-center justify-center">
+        Index
+      </div>
     </>
   );
 };

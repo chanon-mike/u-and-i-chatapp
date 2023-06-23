@@ -7,13 +7,6 @@ export const firebaseAdmin = admin.initializeApp({
   databaseURL: DATABASE_URL,
 });
 
-export const getUserModel = async (cookieVal: string | undefined) => {
-  const auth = firebaseAdmin.auth();
-  const idToken = await auth.verifySessionCookie(cookieVal ?? '', true).catch(() => null);
-
-  return idToken && (await auth.getUser(idToken.uid));
-};
-
 export const decodeToken = async (req: Request, res: Response, next: NextFunction) => {
   // Split the token part, e.g.) [‘Bearer ’, ‘eyJhbGciOiJSUzI1NiIsImtpZCI6………..’]
   const token = req.headers.authorization?.split(' ')[1];
