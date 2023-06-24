@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 import type { ContextMenuCordinates } from '../../interfaces';
+import AvatarLibrary from './AvatarLibrary';
 import ContextMenu from './ContextMenu';
+import PhotoCapture from './PhotoCapture';
+import PhotoUploader from './PhotoUploader';
 
 type AvatarSettingsProps = {
   image: string;
@@ -18,10 +21,10 @@ const AvatarSettings = ({ image, setImage }: AvatarSettingsProps) => {
     x: 0,
     y: 0,
   });
-
-  // State indicating show photo uploading, photo library, take photo
-  const [getPhoto, setGetPhoto] = useState<boolean>(false);
-  const [showPhotoLibrary, setShowPhotoLibrary] = useState<boolean>(false);
+  // State indicating show photo uploading, avatar library, take photo
+  const [showPhotoCapture, setshowPhotoCapture] = useState<boolean>(false);
+  const [showAvatarLibrary, setShowAvatarLibrary] = useState<boolean>(false);
+  const [showPhotoUploader, setShowPhotoUploader] = useState<boolean>(false);
 
   // Show options context menu at current click location
   const showContextMenu = (
@@ -34,32 +37,11 @@ const AvatarSettings = ({ image, setImage }: AvatarSettingsProps) => {
 
   // Options to do when selecting avatar
   const contextMenuOptions = [
-    { name: 'Take Photo', callback: () => setImage('/avatar/avatar_default.png') },
-    { name: 'Choose from library', callback: () => setShowPhotoLibrary(true) },
-    { name: 'Upload Photo', callback: () => setGetPhoto(true) },
-    { name: 'Remove Photo', callback: () => setImage('/avatar/avatar_default.png') },
+    { name: 'Take Photo', callback: () => setshowPhotoCapture(true) },
+    { name: 'Choose from library', callback: () => setShowAvatarLibrary(true) },
+    { name: 'Upload Photo', callback: () => setShowPhotoUploader(true) },
+    { name: 'Remove Photo', callback: () => setImage('/avatars/avatar_default.png') },
   ];
-
-  // Get and upload photo
-  const photoPickerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files;
-    if (file) {
-      console.log(file);
-      const imageUrl = URL.createObjectURL(file[0]);
-      setImage(imageUrl);
-    }
-  };
-
-  // Select file by manipulate DOM to click on type=file hidden form when click upload photo
-  useEffect(() => {
-    if (getPhoto) {
-      const data = document.getElementById('photo-picker');
-      data?.click();
-      document.body.onfocus = () => {
-        setGetPhoto(false);
-      };
-    }
-  }, [getPhoto]);
 
   return (
     <>
@@ -72,7 +54,7 @@ const AvatarSettings = ({ image, setImage }: AvatarSettingsProps) => {
           {/* ContextMenu hover elements */}
           {hover && (
             <div
-              className=" hover:backdrop-brightness-50  h-60 w-60 flex absolute flex-col item-center justify-center rounded-full z-10"
+              className="backdrop-brightness-50 w-60 h-auto max-w-full aspect-square flex absolute flex-col items-center justify-center rounded-full z-10"
               onClick={(e) => showContextMenu(e)}
               id="context-opener"
             >
@@ -82,7 +64,7 @@ const AvatarSettings = ({ image, setImage }: AvatarSettingsProps) => {
                 onClick={(e) => showContextMenu(e)}
               />
               <span
-                className="text-white flex justify-center item-center text-center mt-5"
+                className="text-white text-center mt-10 text-base"
                 id="context-opener"
                 onClick={(e) => showContextMenu(e)}
               >
@@ -96,10 +78,11 @@ const AvatarSettings = ({ image, setImage }: AvatarSettingsProps) => {
             {/* Load image until image variable available */}
             {image && (
               <Image
-                className="rounded-full"
+                className="rounded-full w-60 aspect-square"
                 src={image}
-                width={240}
-                height={240}
+                width={0}
+                height={0}
+                sizes="auto"
                 alt="avatar"
                 priority
               />
@@ -108,18 +91,30 @@ const AvatarSettings = ({ image, setImage }: AvatarSettingsProps) => {
         </div>
       </div>
       {/* Show the options available here */}
-      {isContextMenuVisible && (
-        <ContextMenu
-          options={contextMenuOptions}
-          cordinates={contextMenuCordinates}
-          contextMenu={isContextMenuVisible}
-          setContextMenu={setIsContextMenuVisible}
-        />
-      )}
-      {/* Image uploading component */}
-      <div id="photo-picker-element">
-        <input type="file" hidden id="photo-picker" onChange={photoPickerOnChange} />
-      </div>
+      <ContextMenu
+        options={contextMenuOptions}
+        cordinates={contextMenuCordinates}
+        visible={isContextMenuVisible}
+        setContextMenu={setIsContextMenuVisible}
+      />
+      {/* Take photo component */}
+      <PhotoCapture
+        showPhotoCapture={showPhotoCapture}
+        setShowPhotoCapture={setshowPhotoCapture}
+        setImage={setImage}
+      />
+      {/* Image uploading element */}
+      <PhotoUploader
+        showPhotoUploader={showPhotoUploader}
+        setShowPhotoUploader={setShowPhotoUploader}
+        setImage={setImage}
+      />
+      {/* Avatar selector component */}
+      <AvatarLibrary
+        showAvatarLibrary={showAvatarLibrary}
+        setShowAvatarLibrary={setShowAvatarLibrary}
+        setImage={setImage}
+      />
     </>
   );
 };

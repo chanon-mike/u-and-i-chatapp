@@ -5,12 +5,12 @@ import type { ContextMenuCordinates, ContextMenuOption } from '../../interfaces'
 type ContextMenuProps = {
   options: ContextMenuOption[];
   cordinates: ContextMenuCordinates;
-  contextMenu: boolean;
+  visible: boolean;
   setContextMenu: Dispatch<SetStateAction<boolean>>;
 };
 
 // Component of options available when click on the avatar
-const ContextMenu = ({ options, cordinates, contextMenu, setContextMenu }: ContextMenuProps) => {
+const ContextMenu = ({ options, cordinates, visible = true, setContextMenu }: ContextMenuProps) => {
   const contextMenuRef = useRef<HTMLDivElement>(null);
 
   // Check if the click is outside the menu
@@ -37,27 +37,31 @@ const ContextMenu = ({ options, cordinates, contextMenu, setContextMenu }: Conte
   };
 
   return (
-    <div
-      className="bg-slate-800 fixed py-2 z-50"
-      ref={contextMenuRef}
-      style={{
-        top: cordinates.y,
-        left: cordinates.x,
-      }}
-    >
-      <ul>
-        {/* Repeatly map each option with its name and callback */}
-        {options.map(({ name, callback }) => (
-          <li
-            key={name}
-            className="px-4 py-2 cursor-pointer hover:bg-slate-900"
-            onClick={(e) => handleClick(e, callback)}
-          >
-            <span className="text-white">{name}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      {visible && (
+        <div
+          className="bg-slate-800 fixed py-2 z-50"
+          ref={contextMenuRef}
+          style={{
+            top: cordinates.y,
+            left: cordinates.x,
+          }}
+        >
+          <ul>
+            {/* Repeatly map each option with its name and callback */}
+            {options.map(({ name, callback }) => (
+              <li
+                key={name}
+                className="px-4 py-2 cursor-pointer hover:bg-slate-900"
+                onClick={(e) => handleClick(e, callback)}
+              >
+                <span className="text-white">{name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
   );
 };
 
