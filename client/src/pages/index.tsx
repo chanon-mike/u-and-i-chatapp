@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <>
       <BasicHeader user={user} />
-      <div className="bg-slate-900 h-screen w-screen flex flex-col items-center justify-center">
+      <div className="bg-rich-black h-screen w-screen flex flex-col items-center justify-center">
         Index
       </div>
     </>

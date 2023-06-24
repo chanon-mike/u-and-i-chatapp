@@ -8,12 +8,11 @@ export const loginWithGoogle = async () => {
     .then((result) => {
       const user = result.user;
       if (user) {
-        user.getIdToken().then((tkn) => {
+        user.getIdToken(true).then(async (tkn) => {
           // set access token in session storage
           sessionStorage.setItem('accessToken', tkn);
         });
       }
-      console.log(user);
     })
     .catch((error) => {
       console.error(error);

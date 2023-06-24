@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer } from 'react';
-import { getMe } from '../../api';
+import { getUserData } from '../../api';
 import { userAtom } from '../../atom/user';
 import { createAuth } from '../../utils/firebase';
 import { Loading } from './Loading/Loading';
@@ -15,8 +15,10 @@ export const AuthLoader = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(createAuth(), async (fbUser) => {
       if (fbUser) {
-        await getMe();
-        setUser(fbUser);
+        fbUser.getIdToken(true).then(async (tkn) => {
+          await getUserData(tkn);
+          setUser(fbUser);
+        });
       } else {
         setUser(null);
       }

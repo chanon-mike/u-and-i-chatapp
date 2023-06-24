@@ -9,9 +9,9 @@ export const BasicHeader = ({ user }: { user: User }) => {
   };
 
   return (
-    <div className="bg-slate-200 border-b-2 border-white h-16">
+    <div className="bg-columbia-blue h-16">
       <div className="h-full m-auto p-5 flex items-center justify-between">
-        <Link className="flex items-center justify-between text-blue-950 font-bold" href="/">
+        <Link className="flex items-center justify-between text-glaucous-blue font-bold" href="/">
           <Image src="/uandi_no_text.png" height={80} width={80} alt="othello logo" />
           U&I ChatApp
         </Link>
@@ -27,7 +27,7 @@ export const BasicHeader = ({ user }: { user: User }) => {
           ) : (
             <HumanIcon size={18} fill="#555" />
           )} */}
-        <span className="font-bold text-blue-950 text-base cursor-pointer" onClick={onLogout}>
+        <span className="font-bold text-glaucous-blue text-base cursor-pointer" onClick={onLogout}>
           {user.displayName}
         </span>
       </div>

@@ -22,14 +22,28 @@ const Home = () => {
     setUserData();
   }, [user]);
 
+  // Validate user info
+  const validateDetail = () => {
+    return displayName.length > 3;
+  };
+
+  // Create user profile
+  const handleCreateProfile = async () => {
+    if (validateDetail()) {
+      const email = user?.email;
+
+      console.log('Creating profile', { email, displayName, bio, avatar });
+    }
+  };
+
   if (!user) return <Loading visible />;
 
   return (
     <>
-      <div className="bg-slate-900 h-screen flex flex-col items-center justify-center">
+      <div className="bg-rich-black h-screen flex flex-col items-center justify-center">
         <h2 className="text-2xl text-white mb-10">Create your profile</h2>
         <div className="grid grid-cols-2 gap-4 justify-between">
-          <form className="flex flex-col mr-5 gap-3">
+          <form className="flex flex-col mr-2 gap-3">
             <label className="text-white">Display Name </label>
             <input
               className="p-2"
@@ -39,7 +53,7 @@ const Home = () => {
               onChange={(e) => setDisplayName(e.target.value)}
             />
 
-            <label className="text-white mt-5">Bio</label>
+            <label className="text-white mt-2">Bio</label>
             <input
               className="p-2"
               type="text"
@@ -47,6 +61,12 @@ const Home = () => {
               size={25}
               onChange={(e) => setBio(e.target.value)}
             />
+            <button
+              className="flex justify-center items-center p-2 mt-5 bg-powder-blue"
+              onClick={handleCreateProfile}
+            >
+              <span className="text-rich-black text-lg">Create Profile</span>
+            </button>
           </form>
           <AvatarSettings image={avatar} setImage={setAvatar} />
         </div>

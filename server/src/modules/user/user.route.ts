@@ -1,11 +1,9 @@
-import { Request, Response, Router } from 'express';
-import { decodeToken } from '../../middlewares/firebaseAdmin';
+import { Request, Response, Router } from "express";
+import { decodeToken } from "../../middlewares/firebaseAdmin";
+import { userController } from "./user.controller";
 
 const router: Router = Router();
 
-router.get('/', decodeToken, (req: Request, res: Response) => {
-  console.log(res.locals.user);
-  return res.send(res.locals.user);
-});
+router.get("/", userController.getUserModel);
 
 export default router;
