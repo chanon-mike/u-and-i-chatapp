@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai';
 import { userAtom } from '../atom/user';
 
-import ChatPage from '../components/Chat/ChatPage';
+import Chat from '../components/Chat/Chat';
 import ChatList from '../components/ChatList/ChatList';
 import { Loading } from '../components/common/Loading/Loading';
 
@@ -15,7 +15,7 @@ const Home = () => {
       {/* <BasicHeader user={user} /> */}
       <div className="grid grid-cols-main h-screen w-screen max-h-screen max-w-full overflow-hidden">
         <ChatList />
-        <ChatPage />
+        <Chat />
       </div>
     </>
   );

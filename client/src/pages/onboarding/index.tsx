@@ -48,7 +48,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="bg-rich-black h-screen flex flex-col items-center justify-center">
+      <div className="bg-black h-screen flex flex-col items-center justify-center">
         <h2 className="text-2xl text-white mb-10">Create your profile</h2>
         <div className="grid grid-cols-2 gap-4 justify-between">
           <form className="flex flex-col mr-2 gap-3">
@@ -70,11 +70,11 @@ const Home = () => {
               onChange={(e) => setBio(e.target.value)}
             />
             <button
-              className="flex justify-center items-center p-2 mt-5 bg-powder-blue"
+              className="flex justify-center items-center p-2 mt-5 bg-main"
               type="button"
               onClick={handleCreateProfile}
             >
-              <span className="text-rich-black text-lg">Create Profile</span>
+              <span className="text-black text-lg">Create Profile</span>
             </button>
           </form>
           <AvatarSettings image={avatar} setImage={setAvatar} />

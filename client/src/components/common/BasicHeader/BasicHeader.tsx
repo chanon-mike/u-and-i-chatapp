@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import type { UserModel } from '../../../interfaces';
 import { logout } from '../../../utils/login';
 
@@ -13,12 +12,12 @@ const BasicHeader = ({ user }: BasicHeaderProps) => {
   };
 
   return (
-    <div className="bg-columbia-blue h-16">
+    <div className="bg-slate-200 h-16">
       <div className="h-full m-auto p-5 flex items-center justify-between">
-        <Link className="flex items-center justify-between text-glaucous-blue font-bold" href="/">
+        {/* <Link className="flex items-center justify-between text-glaucous-blue font-bold" href="/">
           <Image src="/uandi_no_text.png" height={80} width={80} alt="othello logo" />
           U&I ChatApp
-        </Link>
+        </Link> */}
 
         <div
           className="flex justify-center items-center gap-3 py-2 px-4 cursor-pointer"
@@ -31,9 +30,9 @@ const BasicHeader = ({ user }: BasicHeaderProps) => {
             width={24}
             alt={user.displayName}
           />
-          <span className="font-bold text-glaucous-blue text-base cursor-pointer">
+          {/* <span className="font-bold text-glaucous-blue text-base cursor-pointer">
             {user.displayName}
-          </span>
+          </span> */}
         </div>
       </div>
     </div>
