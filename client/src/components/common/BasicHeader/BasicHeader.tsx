@@ -1,9 +1,13 @@
-import type { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { UserModel } from '../../../interfaces';
 import { logout } from '../../../utils/login';
 
-export const BasicHeader = ({ user }: { user: User }) => {
+type BasicHeaderProps = {
+  user: UserModel;
+};
+
+const BasicHeader = ({ user }: BasicHeaderProps) => {
   const onLogout = async () => {
     if (confirm('Logout?')) await logout();
   };
@@ -16,21 +20,24 @@ export const BasicHeader = ({ user }: { user: User }) => {
           U&I ChatApp
         </Link>
 
-        {/* <div className={styles.userBtn} onClick={onLogout}>
-          {user.picture ? (
-            <img
-              className={styles.userIcon}
-              src={user.photoURL}
-              height={24}
-              alt={user.displayName}
-            />
-          ) : (
-            <HumanIcon size={18} fill="#555" />
-          )} */}
-        <span className="font-bold text-glaucous-blue text-base cursor-pointer" onClick={onLogout}>
-          {user.displayName}
-        </span>
+        <div
+          className="flex justify-center items-center gap-3 py-2 px-4 cursor-pointer"
+          onClick={onLogout}
+        >
+          <Image
+            className="rounded-full"
+            src={user.avatar}
+            height={24}
+            width={24}
+            alt={user.displayName}
+          />
+          <span className="font-bold text-glaucous-blue text-base cursor-pointer">
+            {user.displayName}
+          </span>
+        </div>
       </div>
     </div>
   );
 };
+
+export default BasicHeader;

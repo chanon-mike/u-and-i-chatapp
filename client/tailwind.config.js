@@ -19,6 +19,13 @@ module.exports = {
         'columbia-blue': '#BBD1EA',
         'platinum-gray': '#DAE3E5',
         'bright-yellow': '#ffb31a',
+        'chat-border': '#8696A0',
+        'chat-bg': '#0b141a',
+        'panel-header-bg': '#202c33',
+        'panel-header-icon': '#aebac1',
+      },
+      gridTemplateColumns: {
+        main: '0.8fr 2fr',
       },
     },
   },
