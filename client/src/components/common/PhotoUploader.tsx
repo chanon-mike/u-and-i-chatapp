@@ -15,7 +15,6 @@ const PhotoUploader = ({
   const photoPickerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
     if (file) {
-      console.log(file);
       const imageUrl = URL.createObjectURL(file[0]);
       setImage(imageUrl);
     }

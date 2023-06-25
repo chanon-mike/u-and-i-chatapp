@@ -27,6 +27,7 @@ This is a real-time chat application built as my capstone project
 ### Bugs and problems founded
 
 - [ ] Photo taken with webcam in onboarding page aspect ratio is 4:3, but user icon is in 1:1. Need to crop image.
+- [ ] Routing page for onboarding, login and main page are currently bug. Will fix it after finish most of chat
 
 ## Built with
 
