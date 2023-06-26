@@ -26,7 +26,7 @@ const Home = () => {
   }, [fbUser]);
 
   // Create user profile
-  const handleCreateProfile = () => {
+  const handleCreateProfile = async () => {
     const email = fbUser?.email;
     const uid = fbUser?.uid;
     if (email && uid) {
@@ -37,9 +37,7 @@ const Home = () => {
         bio,
         avatar,
       };
-      fbUser?.getIdToken().then(async (tkn) => {
-        await userApiClient.createUserProfile(tkn, data);
-      });
+      await userApiClient.createUserProfile(data);
       router.push('/');
     }
   };

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import type { UserModel } from '../interfaces';
+import { apiClient } from '../utils/apiClient';
 import { returnNull } from '../utils/returnNull';
 
 const api_base = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -7,12 +7,10 @@ const userBase = `${api_base}/api/user`;
 
 export const userApiClient = {
   // GET current user data
-  getUserData: async (token: string, uid: string): Promise<UserModel | null> => {
+  getUserData: async (uid: string): Promise<UserModel | null> => {
     try {
-      return await axios
+      return await apiClient
         .get(userBase, {
-          withCredentials: true,
-          headers: { Authorization: `Bearer ${token}` },
           params: { uid },
         })
         .then((res) => res.data)
@@ -23,36 +21,38 @@ export const userApiClient = {
     }
   },
   // POST new user profile to the api
-  createUserProfile: async (
-    token: string,
-    params: {
-      uid: string;
-      email: string;
-      displayName: string;
-      bio: string;
-      avatar: string;
-    }
-  ) => {
+  createUserProfile: async (params: {
+    uid: string;
+    email: string;
+    displayName: string;
+    bio: string;
+    avatar: string;
+  }) => {
     try {
-      return await axios
-        .post(
-          userBase,
-          {
-            uid: params.uid,
-            email: params.email,
-            displayName: params.displayName,
-            bio: params.bio,
-            avatar: params.avatar,
-          },
-          {
-            withCredentials: true,
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
+      return await apiClient
+        .post(userBase, {
+          uid: params.uid,
+          email: params.email,
+          displayName: params.displayName,
+          bio: params.bio,
+          avatar: params.avatar,
+        })
         .then((res) => res.data)
         .catch(returnNull);
     } catch (e) {
       console.error(e);
+    }
+  },
+  // GET all user data
+  getAllUserData: async (): Promise<UserModel[] | null> => {
+    try {
+      return await apiClient
+        .get(userBase)
+        .then((res) => res.data)
+        .catch(returnNull);
+    } catch (e) {
+      console.error(e);
+      return null;
     }
   },
 };

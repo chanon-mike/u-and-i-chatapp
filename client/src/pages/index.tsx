@@ -2,7 +2,7 @@ import { useAtom } from 'jotai';
 import { userAtom } from '../atom/user';
 
 import Chat from '../components/Chat/Chat';
-import ChatList from '../components/ChatList/ChatList';
+import ChatList from '../components/ChatBar/ChatBar';
 import { Loading } from '../components/common/Loading/Loading';
 
 const Home = () => {

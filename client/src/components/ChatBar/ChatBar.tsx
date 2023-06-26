@@ -1,4 +1,4 @@
-import ChatListHeader from './ChatListHeader';
+import ChatListHeader from './ChatBarHeader';
 import ContactList from './ContactList';
 import SearchBar from './SearchBar';
 

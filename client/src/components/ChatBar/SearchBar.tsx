@@ -8,7 +8,7 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="Search or start a new chat"
-          className="bg-transparent text-sm focus:outline-none text-white w-full"
+          className="bg-transparent text-sm focus:outline-none text-primary w-full"
         />
       </div>
     </div>

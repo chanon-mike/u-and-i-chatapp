@@ -3,16 +3,20 @@ import { prismaClient } from "../../utils/prismaClient";
 
 export const userController = {
   getUserData: async (
-    req: Request<{}, {}, {}, { uid: string }>,
+    req: Request<{}, {}, {}, { uid?: string }>,
     res: Response
   ) => {
     // Return user data in db if uid is pass as query, else return firebase default data
-    if (req.query) {
+    if (req.query.uid) {
       const userPrisma = await prismaClient.user.findFirst({
         where: { uid: req.query.uid },
       });
       return res.status(200).send(userPrisma);
     }
+    const allUserPrisma = await prismaClient.user.findMany({
+      orderBy: { displayName: "asc" },
+    });
+    return res.status(200).send(allUserPrisma);
   },
   saveUserProfile: async (req: Request, res: Response, next: NextFunction) => {
     try {
