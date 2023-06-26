@@ -4,3 +4,4 @@ import type { UserModel } from '../interfaces';
 
 export const fbUserAtom = atom<User | null>(null);
 export const userAtom = atom<UserModel | null>(null);
+export const currentChatUserAtom = atom<UserModel | null>(null);

@@ -1,3 +1,5 @@
+import { useAtom } from 'jotai';
+import { currentChatUserAtom } from '../../atom/user';
 import type { UserModel } from '../../interfaces';
 import Avatar from '../common/Avatar';
 
@@ -6,8 +8,17 @@ type ContactProps = {
 };
 
 const Contact = ({ contact }: ContactProps) => {
+  const [, setCurrentChatUser] = useAtom(currentChatUserAtom);
+
+  const handleChangeChat = () => {
+    setCurrentChatUser(contact);
+  };
+
   return (
-    <div className="flex items-center cursor-pointer hover:bg-searchbar-bg">
+    <div
+      className="flex items-center cursor-pointer hover:bg-searchbar-bg"
+      onClick={handleChangeChat}
+    >
       <div className="min-w-fit px-5 py-2 flex items-center">
         <Avatar type="sm" image={contact.avatar} />
       </div>

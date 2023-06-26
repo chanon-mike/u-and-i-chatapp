@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer } from 'react';
-import { userApiClient } from '../../api';
+import { userApiClient } from '../../api/user';
 import { fbUserAtom, userAtom } from '../../atom/user';
 import { apiClient } from '../../utils/apiClient';
 import { createAuth } from '../../utils/firebase';

@@ -1,14 +1,19 @@
 import { BsThreeDots } from 'react-icons/bs';
 import { MdCall, MdSearch, MdVideocam } from 'react-icons/md';
+import type { UserModel } from '../../interfaces';
 import Avatar from '../common/Avatar';
 
-const ChatHeader = () => {
+type ChatHeaderProps = {
+  currentChatUser: UserModel;
+};
+
+const ChatHeader = ({ currentChatUser }: ChatHeaderProps) => {
   return (
     <div className="h-16 px-4 py-3 w-full flex justify-between items-center bg-light-shade z-10 shadow-sm ">
       <div className="flex items-center justify-center gap-6">
-        <Avatar type="sm" image="/avatars/avatar1.png" />
+        <Avatar type="sm" image={currentChatUser.avatar} />
         <div className="flex flex-col">
-          <span className="text-primary text-base text-bold">DEMO USER</span>
+          <span className="text-primary text-base text-bold">{currentChatUser.displayName}</span>
           <span className=" text-secondary text-sm">Online | Offline</span>
         </div>
       </div>

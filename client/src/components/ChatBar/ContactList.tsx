@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import { userApiClient } from '../../api';
+import { userApiClient } from '../../api/user';
 import { userAtom } from '../../atom/user';
 import type { UserModel } from '../../interfaces';
 import { Loading } from '../common/Loading/Loading';

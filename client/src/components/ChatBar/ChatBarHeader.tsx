@@ -4,7 +4,7 @@ import { userAtom } from '../../atom/user';
 import Avatar from '../common/Avatar';
 import { Loading } from '../common/Loading/Loading';
 
-const ChatListHeader = () => {
+const ChatBarHeader = () => {
   const [user] = useAtom(userAtom);
 
   if (!user) return <Loading visible />;
@@ -22,4 +22,4 @@ const ChatListHeader = () => {
   );
 };
 
-export default ChatListHeader;
+export default ChatBarHeader;

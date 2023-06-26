@@ -18,3 +18,13 @@ export type UserModel = {
   avatar: string;
   createdAt: number;
 };
+
+export type ChatModel = {
+  id: number;
+  senderUid: UserModel['uid'];
+  receiverUid: UserModel['uid'];
+  type: string;
+  message: string;
+  messageStatus: string;
+  createdAt: number;
+};

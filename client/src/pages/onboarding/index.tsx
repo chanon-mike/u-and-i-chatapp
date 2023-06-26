@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { fbUserAtom } from '../../atom/user';
 
 import { useRouter } from 'next/router';
-import { userApiClient } from '../../api';
+import { userApiClient } from '../../api/user';
 import AvatarSettings from '../../components/common/AvatarSettings';
 import { Loading } from '../../components/common/Loading/Loading';
 

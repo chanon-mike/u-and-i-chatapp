@@ -2,7 +2,7 @@ import ChatListHeader from './ChatBarHeader';
 import ContactList from './ContactList';
 import SearchBar from './SearchBar';
 
-const ChatList = () => {
+const ChatBar = () => {
   return (
     <div className="bg-light-shade flex flex-col max-h-screen z-20">
       <div>
@@ -14,4 +14,4 @@ const ChatList = () => {
   );
 };
 
-export default ChatList;
+export default ChatBar;
