@@ -11,7 +11,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen flex-col gap-6 bg-rich-black">
+    <div className="flex justify-center items-center h-screen w-screen flex-col gap-6 bg-light-shade">
       <button className="flex rounded-lg p-4 bg-slate-800" onClick={handleLogin}>
         <FcGoogle className="text-4xl" />
         <span className="pl-3 text-white text-2xl">Login with Google</span>

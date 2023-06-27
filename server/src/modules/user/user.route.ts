@@ -1,5 +1,4 @@
-import { Request, Response, Router } from "express";
-import { decodeToken } from "../../middlewares/firebaseAdmin";
+import { Router } from "express";
 import { userController } from "./user.controller";
 
 const router: Router = Router();

@@ -1,10 +1,8 @@
 import Image from 'next/image';
-import type { Dispatch, SetStateAction } from 'react';
 
 type AvatarProps = {
   type: string;
   image: string;
-  setImage: Dispatch<SetStateAction<string>>;
 };
 
 const Avatar = ({ type, image }: AvatarProps) => {

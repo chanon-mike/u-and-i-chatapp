@@ -2,18 +2,23 @@ import { NextFunction, Request, Response } from "express";
 import { prismaClient } from "../../utils/prismaClient";
 
 export const userController = {
+  // GET all user data if uid is pass as query, else return firebase default data
   getUserData: async (
-    req: Request<{}, {}, {}, { uid: string }>,
+    req: Request<{}, {}, {}, { uid?: string }>,
     res: Response
   ) => {
-    // Return user data in db if uid is pass as query, else return firebase default data
-    if (req.query) {
+    if (req.query.uid) {
       const userPrisma = await prismaClient.user.findFirst({
         where: { uid: req.query.uid },
       });
       return res.status(200).send(userPrisma);
     }
+    const allUserPrisma = await prismaClient.user.findMany({
+      orderBy: { displayName: "asc" },
+    });
+    return res.status(200).send(allUserPrisma);
   },
+  // POST user profile if not exist, PUT new profile if exist
   saveUserProfile: async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.body.email || !req.body.displayName) {

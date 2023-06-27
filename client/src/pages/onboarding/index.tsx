@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { fbUserAtom } from '../../atom/user';
 
 import { useRouter } from 'next/router';
-import { userApiClient } from '../../api';
+import { userApiClient } from '../../api/user';
 import AvatarSettings from '../../components/common/AvatarSettings';
 import { Loading } from '../../components/common/Loading/Loading';
 
@@ -26,7 +26,7 @@ const Home = () => {
   }, [fbUser]);
 
   // Create user profile
-  const handleCreateProfile = () => {
+  const handleCreateProfile = async () => {
     const email = fbUser?.email;
     const uid = fbUser?.uid;
     if (email && uid) {
@@ -37,9 +37,7 @@ const Home = () => {
         bio,
         avatar,
       };
-      fbUser?.getIdToken().then(async (tkn) => {
-        await userApiClient.createUserProfile(tkn, data);
-      });
+      await userApiClient.createUserProfile(data);
       router.push('/');
     }
   };
@@ -48,7 +46,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="bg-rich-black h-screen flex flex-col items-center justify-center">
+      <div className="bg-black h-screen flex flex-col items-center justify-center">
         <h2 className="text-2xl text-white mb-10">Create your profile</h2>
         <div className="grid grid-cols-2 gap-4 justify-between">
           <form className="flex flex-col mr-2 gap-3">
@@ -70,11 +68,11 @@ const Home = () => {
               onChange={(e) => setBio(e.target.value)}
             />
             <button
-              className="flex justify-center items-center p-2 mt-5 bg-powder-blue"
+              className="flex justify-center items-center p-2 mt-5 bg-main"
               type="button"
               onClick={handleCreateProfile}
             >
-              <span className="text-rich-black text-lg">Create Profile</span>
+              <span className="text-black text-lg">Create Profile</span>
             </button>
           </form>
           <AvatarSettings image={avatar} setImage={setAvatar} />

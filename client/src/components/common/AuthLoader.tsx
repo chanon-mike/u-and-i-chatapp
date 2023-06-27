@@ -2,8 +2,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer } from 'react';
-import { userApiClient } from '../../api';
+import { userApiClient } from '../../api/user';
 import { fbUserAtom, userAtom } from '../../atom/user';
+import { apiClient } from '../../utils/apiClient';
 import { createAuth } from '../../utils/firebase';
 import { Loading } from './Loading/Loading';
 
@@ -17,11 +18,13 @@ export const AuthLoader = () => {
     const unsubscribe = onAuthStateChanged(createAuth(), async (firebaseUser) => {
       if (firebaseUser) {
         firebaseUser.getIdToken(true).then(async (tkn) => {
-          const userData = await userApiClient.getUserData(tkn, firebaseUser.uid);
+          apiClient.defaults.headers.common['Authorization'] = `Bearer ${tkn}`;
+          const userData = await userApiClient.getUserData(firebaseUser.uid);
           setUser(userData);
           setFbUser(firebaseUser);
         });
       } else {
+        apiClient.defaults.headers.common['Authorization'] = '';
         setFbUser(null);
         setUser(null);
       }
