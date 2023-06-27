@@ -8,24 +8,56 @@ datasource db {
 }
 
 model User {
-  uid             String    @id
-  displayName     String
-  email           String    @unique
-  bio             String    @default("")
-  avatar          String    @default("")
-  createdAt       DateTime  @default(now())
-  sentMessage     Message[] @relation("sentMessage")
-  receivedMessage Message[] @relation("receivedMessage")
+  uid         String   @id
+  displayName String
+  email       String   @unique
+  bio         String   @default("")
+  avatar      String   @default("")
+  createdAt   DateTime @default(now())
+
+  friendRequester Friend[]      @relation("friendRequester")
+  friendAddressee Friend[]      @relation("friendAddressee")
+  groups          GroupMember[]
+  sentMessages    Message[]
+}
+
+model Friend {
+  id           Int      @id @default(autoincrement())
+  requesterUid String
+  addresseeUid String
+  createdAt    DateTime @default(now())
+
+  user1 User @relation("friendRequester", fields: [requesterUid], references: [uid])
+  user2 User @relation("friendAddressee", fields: [addresseeUid], references: [uid])
+}
+
+model Group {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+
+  members  GroupMember[]
+  messages Message[]
+}
+
+model GroupMember {
+  id      Int    @id @default(autoincrement())
+  groupId Int
+  userId  String
+
+  user  User  @relation(fields: [userId], references: [uid])
+  group Group @relation(fields: [groupId], references: [id])
 }
 
 model Message {
   id            Int      @id @default(autoincrement())
+  groupId       Int
   senderUid     String
-  sender        User     @relation("sentMessage", fields: [senderUid], references: [uid])
-  receiverUid   String
-  receiver      User     @relation("receivedMessage", fields: [receiverUid], references: [uid])
-  type          String   @default("text")
+  type          String
   message       String
-  messageStatus String   @default("sent")
+  messageStatus String
   createdAt     DateTime @default(now())
+
+  group  Group @relation(fields: [groupId], references: [id])
+  sender User  @relation(fields: [senderUid], references: [uid])
 }
