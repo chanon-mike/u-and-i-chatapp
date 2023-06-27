@@ -1,13 +1,14 @@
 import type { ChatModel } from '../interfaces';
-import { apiClient, chatApi } from '../utils/apiClient';
+import { apiClient, chatApiBase } from '../utils/apiClient';
 import { returnNull } from '../utils/returnNull';
 
+// FIX THIS TO GET CHAT AND SEND IN A GROUP
 export const chatApiClient = {
   // GET all messages between from and to
   getMessages: async (fromUid: string, toUid: string): Promise<ChatModel[] | null> => {
     try {
       return await apiClient
-        .get(chatApi, {
+        .get(chatApiBase, {
           params: {
             fromUid,
             toUid,
@@ -28,7 +29,7 @@ export const chatApiClient = {
   ): Promise<ChatModel | null> => {
     try {
       return await apiClient
-        .post(chatApi, {
+        .post(chatApiBase, {
           message,
           from: fromUid,
           to: toUid,

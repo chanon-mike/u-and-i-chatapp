@@ -2,21 +2,22 @@ import { NextFunction, Request, Response } from "express";
 import { prismaClient } from "../../utils/prismaClient";
 
 export const userController = {
-  // GET all user data if uid is pass as query, else return firebase default data
-  getUserData: async (
-    req: Request<{}, {}, {}, { uid?: string }>,
-    res: Response
-  ) => {
-    if (req.query.uid) {
-      const userPrisma = await prismaClient.user.findFirst({
-        where: { uid: req.query.uid },
-      });
-      return res.status(200).send(userPrisma);
-    }
+  // GET all user data
+  getAllUserData: async (req: Request, res: Response) => {
     const allUserPrisma = await prismaClient.user.findMany({
       orderBy: { displayName: "asc" },
     });
     return res.status(200).send(allUserPrisma);
+  },
+  // GET specific user data
+  getUserData: async (req: Request<{ uid: string }>, res: Response) => {
+    if (req.params && req.params.uid) {
+      const userPrisma = await prismaClient.user.findFirst({
+        where: { uid: req.params.uid },
+      });
+      return res.status(200).send(userPrisma);
+    }
+    return res.status(400).send("uid is required as a parameter.");
   },
   // POST user profile if not exist, PUT new profile if exist
   saveUserProfile: async (req: Request, res: Response, next: NextFunction) => {
@@ -41,6 +42,7 @@ export const userController = {
           email: req.body.email,
           bio: req.body.bio,
           avatar: req.body.avatar,
+          isOnline: true,
           createdAt: new Date(Date.now()),
         },
       });

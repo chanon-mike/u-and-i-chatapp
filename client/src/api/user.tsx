@@ -1,5 +1,5 @@
 import type { UserModel } from '../interfaces';
-import { apiClient, userApi } from '../utils/apiClient';
+import { apiClient, userApiBase } from '../utils/apiClient';
 import { returnNull } from '../utils/returnNull';
 
 export const userApiClient = {
@@ -7,9 +7,7 @@ export const userApiClient = {
   getUserData: async (uid: string): Promise<UserModel | null> => {
     try {
       return await apiClient
-        .get(userApi, {
-          params: { uid },
-        })
+        .get(`${userApiBase}/${uid}`)
         .then((res) => res.data)
         .catch(returnNull);
     } catch (e) {
@@ -21,7 +19,7 @@ export const userApiClient = {
   getAllUserData: async (): Promise<UserModel[] | null> => {
     try {
       return await apiClient
-        .get(userApi)
+        .get(userApiBase)
         .then((res) => res.data)
         .catch(returnNull);
     } catch (e) {
@@ -39,7 +37,7 @@ export const userApiClient = {
   }) => {
     try {
       return await apiClient
-        .post(userApi, {
+        .post(userApiBase, {
           uid: params.uid,
           email: params.email,
           displayName: params.displayName,

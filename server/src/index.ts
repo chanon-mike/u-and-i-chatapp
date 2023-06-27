@@ -31,4 +31,4 @@ app.listen(PORT, function () {
   console.log(`App is listening on port ${PORT} !`);
 });
 
-global.onlineUsers = new Map();
+// global.onlineUsers = new Map();

@@ -16,6 +16,7 @@ export type UserModel = {
   email: string;
   bio: string;
   avatar: string;
+  isOnline: boolean;
   createdAt: number;
 };
 
