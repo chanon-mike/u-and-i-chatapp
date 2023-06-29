@@ -9,7 +9,7 @@ const Chat = () => {
   const [currentChatUser] = useAtom(currentChatUserAtom);
 
   return (
-    <div className="bg-light-shade shadow-inner w-full flex flex-col h-[100vh]  items-center">
+    <div className="bg-light-shade shadow-inner w-full flex flex-col h-[100vh] items-center">
       {currentChatUser && user && (
         <>
           <ChatHeader currentChatUser={currentChatUser} />

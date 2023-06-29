@@ -6,3 +6,4 @@ export const apiClient = axios.create({ withCredentials: true });
 
 export const userApiBase = `${apiBase}/api/user`;
 export const chatApiBase = `${apiBase}/api/chat`;
+export const groupApiBase = `${apiBase}/api/group`;

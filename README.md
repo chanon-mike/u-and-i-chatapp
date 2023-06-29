@@ -40,12 +40,6 @@ Planned to use ZEGOCLOUD or WebRTC for video call
 
 ```mermaid
 erDiagram
-    User ||--o{ GroupMember: "belong to"
-    User ||--o{ Message: "send message"
-    User ||--o{ Message: "seen message"
-    Group ||--o{ GroupMember: "contain"
-    Message }o--|| Group: "belong to"
-
     User {
         string uid PK
         string displayName
@@ -65,6 +59,11 @@ erDiagram
         number groupId FK
         string userId FK
     }
+    MessageSeenByUser {
+        number id PK
+        string userId FK
+        number messageId FK
+    }
     Message {
         number id PK
         number groupId FK
@@ -73,4 +72,11 @@ erDiagram
         string message
         datetime createdAt
     }
+
+    User ||--o{ GroupMember: "belong to"
+    User ||--o{ Message: "send message"
+    User ||--o{ MessageSeenByUser: "seen"
+    MessageSeenByUser o{--|| Message: "is seen by"
+    Group ||--|{ GroupMember: "contain"
+    Message }o--|| Group: "belong to"
 ```

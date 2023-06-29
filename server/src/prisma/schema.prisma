@@ -16,9 +16,9 @@ model User {
   isOnline    Boolean
   createdAt   DateTime @default(now())
 
-  groups       GroupMember[]
-  sentMessages Message[]     @relation("sent")
-  seenMessages Message[]
+  groups            GroupMember[]
+  sentMessages      Message[]           @relation("sent")
+  messageSeenByUser MessageSeenByUser[]
 }
 
 model Group {
@@ -39,15 +39,24 @@ model GroupMember {
   group   Group  @relation(fields: [groupId], references: [id])
 }
 
+model MessageSeenByUser {
+  id Int @id @default(autoincrement())
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [uid])
+  messageId Int
+  message   Message @relation(fields: [messageId], references: [id])
+}
+
 model Message {
   id        Int      @id @default(autoincrement())
   type      String
   message   String
   createdAt DateTime @default(now())
 
-  groupId   Int
-  group     Group  @relation(fields: [groupId], references: [id])
-  senderUid String
-  sender    User   @relation("sent", fields: [senderUid], references: [uid])
-  seenBy    User[]
+  groupId           Int
+  group             Group               @relation(fields: [groupId], references: [id])
+  senderUid         String
+  sender            User                @relation("sent", fields: [senderUid], references: [uid])
+  messageSeenByUser MessageSeenByUser[]
 }
