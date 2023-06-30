@@ -1,19 +1,22 @@
 import { useState } from 'react';
-import type { GroupWithMemberModel, UserModel } from '../../interfaces';
+import type { ConversationWithMemberModel, UserModel } from '../../interfaces';
 import ChatListHeader from './ChatBarHeader';
 import ContactList from './ContactList';
 import SearchBar from './SearchBar';
 
 const ChatBar = () => {
   const [userContactList, setUserContactList] = useState<UserModel[]>([]);
-  const [groupList, setGroupList] = useState<GroupWithMemberModel[]>([]);
+  const [conversationList, setConversationList] = useState<ConversationWithMemberModel[]>([]);
 
   return (
     <div className="bg-light-shade flex flex-col max-h-screen z-20">
       <div>
-        <ChatListHeader setUserContactList={setUserContactList} setGroupList={setGroupList} />
+        <ChatListHeader
+          setUserContactList={setUserContactList}
+          setConversationList={setConversationList}
+        />
         <SearchBar />
-        <ContactList userContactList={userContactList} groupList={groupList} />
+        <ContactList userContactList={userContactList} conversationList={conversationList} />
       </div>
     </div>
   );

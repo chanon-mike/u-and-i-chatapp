@@ -1,12 +1,12 @@
-import { apiClient, groupApiBase } from '../utils/apiClient';
+import { apiClient, conversationApiBase } from '../utils/apiClient';
 import { returnNull } from '../utils/returnNull';
 
-export const groupApiClient = {
-  // GET current user available group
-  getCurrentUserGroup: async (uid: string) => {
+export const conversationApiClient = {
+  // GET current user available conversation
+  getCurrentUserConversation: async (uid: string) => {
     try {
       return await apiClient
-        .get(groupApiBase, {
+        .get(conversationApiBase, {
           params: {
             uid,
           },

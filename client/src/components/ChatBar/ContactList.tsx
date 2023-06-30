@@ -1,15 +1,15 @@
 import { useAtom } from 'jotai';
 import { userAtom } from '../../atom/user';
-import type { GroupWithMemberModel, UserModel } from '../../interfaces';
+import type { ConversationWithMemberModel, UserModel } from '../../interfaces';
 import { Loading } from '../common/Loading/Loading';
 import Contact from './Contact';
 
 type ContactListProps = {
   userContactList: UserModel[];
-  groupList: GroupWithMemberModel[];
+  conversationList: ConversationWithMemberModel[];
 };
 
-const ContactList = ({ userContactList, groupList }: ContactListProps) => {
+const ContactList = ({ userContactList, conversationList }: ContactListProps) => {
   const [user] = useAtom(userAtom);
 
   if (!user) return <Loading visible />;
@@ -25,15 +25,12 @@ const ContactList = ({ userContactList, groupList }: ContactListProps) => {
               </div>
             )
         )}
-      {groupList.length > 0 &&
-        groupList.map(
-          (group) =>
-            group.userId !== user.uid && (
-              <div key={group.user.uid}>
-                <Contact contact={group.user} />
-              </div>
-            )
-        )}
+      {conversationList.length > 0 &&
+        conversationList.map((conversation) => (
+          <div key={conversation.user.uid}>
+            <Contact contact={conversation.user} />
+          </div>
+        ))}
     </div>
   );
 };

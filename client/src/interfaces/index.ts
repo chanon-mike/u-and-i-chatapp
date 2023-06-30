@@ -30,19 +30,19 @@ export interface ChatModel {
   createdAt: number;
 }
 
-export interface GroupModel {
+export interface ConversationModel {
   id: number;
   name: string;
   createdAt: number;
 }
 
-export interface GroupMemberModel {
+export interface ConversationMemberModel {
   id: number;
   userId: UserModel['uid'];
-  groupId: GroupModel['id'];
+  conversationId: ConversationModel['id'];
 }
 
-export interface GroupWithMemberModel extends GroupMemberModel {
-  group: GroupModel;
+export interface ConversationWithMemberModel extends ConversationMemberModel {
+  conversation: ConversationModel;
   user: UserModel;
 }

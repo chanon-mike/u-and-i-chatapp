@@ -2,16 +2,16 @@ import { NextFunction, Request, Response } from "express";
 import { prismaClient } from "../../utils/prismaClient";
 
 export const chatController = {
-  // GET all messages in group
+  // GET all messages in conversation
   getAllMessage: async (
-    req: Request<{ groupId: number }>,
+    req: Request<{ conversationId: number }>,
     res: Response,
     next: NextFunction
   ) => {
     try {
       const messages = await prismaClient.message.findMany({
         where: {
-          groupId: req.params.groupId,
+          conversationId: req.params.conversationId,
         },
         orderBy: {
           id: "asc",
@@ -23,21 +23,24 @@ export const chatController = {
       next(e);
     }
   },
-  // POST new message from senderUid to groupId
+  // POST new message from senderUid to conversationId
   sendMessage: async (
-    req: Request<{ groupId: number }, { message: string; senderUid: string }>,
+    req: Request<
+      { conversationId: number },
+      { message: string; senderUid: string }
+    >,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const groupId = req.params.groupId;
+      const conversationId = req.params.conversationId;
       const { message, senderUid } = req.body;
 
-      if (groupId && message && senderUid) {
+      if (conversationId && message && senderUid) {
         const newMessage = await prismaClient.message.create({
           data: {
             message: message,
-            group: { connect: { id: groupId } },
+            conversation: { connect: { id: conversationId } },
             sender: { connect: { uid: senderUid } },
             type: "text",
           },
@@ -49,7 +52,7 @@ export const chatController = {
       }
       return res
         .status(400)
-        .send("groupId, message and senderUid are required.");
+        .send("conversationId, message and senderUid are required.");
     } catch (e) {
       console.error(e);
       next(e);

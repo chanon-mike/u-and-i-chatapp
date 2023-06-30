@@ -2,20 +2,20 @@ import { useAtom } from 'jotai';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { BsFillChatFill, BsPeopleFill, BsPersonFillAdd, BsThreeDotsVertical } from 'react-icons/bs';
-import { groupApiClient } from '../../api/group';
+import { conversationApiClient } from '../../api/conversation';
 import { userApiClient } from '../../api/user';
 import { userAtom } from '../../atom/user';
-import type { GroupWithMemberModel, UserModel } from '../../interfaces';
+import type { ConversationWithMemberModel, UserModel } from '../../interfaces';
 import GroupChatModal from '../Modal/GroupChatModal';
 import Avatar from '../common/Avatar';
 import { Loading } from '../common/Loading/Loading';
 
 type ChatBarHeaderProps = {
   setUserContactList: Dispatch<SetStateAction<UserModel[]>>;
-  setGroupList: Dispatch<SetStateAction<GroupWithMemberModel[]>>;
+  setConversationList: Dispatch<SetStateAction<ConversationWithMemberModel[]>>;
 };
 
-const ChatBarHeader = ({ setUserContactList, setGroupList }: ChatBarHeaderProps) => {
+const ChatBarHeader = ({ setUserContactList, setConversationList }: ChatBarHeaderProps) => {
   const [user] = useAtom(userAtom);
   const [showGroupChatModal, setShowGroupChatModal] = useState<boolean>(false);
 
@@ -24,16 +24,16 @@ const ChatBarHeader = ({ setUserContactList, setGroupList }: ChatBarHeaderProps)
     console.log(response);
     if (response) {
       setUserContactList(response);
-      setGroupList([]);
+      setConversationList([]);
     }
   };
 
-  const fetchCurrentUserGroup = async () => {
-    const response = await groupApiClient.getCurrentUserGroup(user?.uid || '');
+  const fetchCurrentUserConversation = async () => {
+    const response = await conversationApiClient.getCurrentUserConversation(user?.uid || '');
     console.log(response);
     if (response) {
       setUserContactList([]);
-      setGroupList(response);
+      setConversationList(response);
     }
   };
 
@@ -47,7 +47,7 @@ const ChatBarHeader = ({ setUserContactList, setGroupList }: ChatBarHeaderProps)
       <div className="flex gap-4">
         <BsFillChatFill
           className="text-main cursor-pointer text-xl"
-          onClick={fetchCurrentUserGroup}
+          onClick={fetchCurrentUserConversation}
         />
         <BsPeopleFill className="text-main cursor-pointer text-xl" onClick={fetchAllUser} />
         <BsPersonFillAdd

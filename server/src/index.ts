@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 import userRoute from "./modules/user/user.route";
 import chatRoute from "./modules/chat/chat.route";
-import groupRoute from "./modules/group/group.route";
+import conversationRoute from "./modules/conversation/conversation.route";
 import { CORS_ORIGIN, PORT } from "./utils/envValues";
 import { decodeToken } from "./middlewares/firebaseAdmin";
 
@@ -23,7 +23,7 @@ app.use(decodeToken);
 
 app.use("/api/user", userRoute);
 app.use("/api/chat", chatRoute);
-app.use("/api/group", groupRoute);
+app.use("/api/conversation", conversationRoute);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello world!");

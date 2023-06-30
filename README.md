@@ -49,14 +49,15 @@ erDiagram
         boolean isOnline
         datetime createdAt
     }
-    Group {
+    Conversation {
         number id PK
         string name
+        boolean isGroup
         datetime createdAt
     }
-    GroupMember {
+    ConversationMember {
         number id PK
-        number groupId FK
+        number conversationId FK
         string userId FK
     }
     MessageSeenByUser {
@@ -66,17 +67,17 @@ erDiagram
     }
     Message {
         number id PK
-        number groupId FK
+        number conversationId FK
         string senderUid FK
         string type
         string message
         datetime createdAt
     }
 
-    User ||--o{ GroupMember: "belong to"
+    User ||--o{ ConversationMember: "belong to"
     User ||--o{ Message: "send message"
     User ||--o{ MessageSeenByUser: "seen"
     MessageSeenByUser o{--|| Message: "is seen by"
-    Group ||--|{ GroupMember: "contain"
-    Message }o--|| Group: "belong to"
+    Conversation ||--|{ ConversationMember: "contain"
+    Message }o--|| Conversation: "belong to"
 ```
