@@ -33,6 +33,8 @@ export interface ChatModel {
 export interface ConversationModel {
   id: number;
   name: string;
+  isGroup: boolean;
+  lastMessageAt: number;
   createdAt: number;
 }
 
@@ -42,7 +44,10 @@ export interface ConversationMemberModel {
   conversationId: ConversationModel['id'];
 }
 
-export interface ConversationWithMemberModel extends ConversationMemberModel {
-  conversation: ConversationModel;
+export interface ConversationMemberWithUserModel extends ConversationMemberModel {
   user: UserModel;
+}
+
+export interface FullConversationModel extends ConversationModel {
+  members: ConversationMemberWithUserModel[];
 }

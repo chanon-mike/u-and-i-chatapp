@@ -1,17 +1,30 @@
 import { useAtom } from 'jotai';
-import { currentChatUserAtom } from '../../atom/user';
+import { conversationApiClient } from '../../api/conversation';
+import { conversationAtom } from '../../atom/conversation';
+import { userAtom } from '../../atom/user';
 import type { UserModel } from '../../interfaces';
 import Avatar from '../common/Avatar';
 
-type ContactProps = {
+type UserBoxProps = {
   contact: UserModel;
 };
 
-const Contact = ({ contact }: ContactProps) => {
-  const [, setCurrentChatUser] = useAtom(currentChatUserAtom);
+const UserBox = ({ contact }: UserBoxProps) => {
+  const [user] = useAtom(userAtom);
+  const [, setCurrentConversation] = useAtom(conversationAtom);
 
-  const handleChangeChat = () => {
-    setCurrentChatUser(contact);
+  const handleChangeChat = async () => {
+    // setCurrentChatUser(contact);
+    if (user) {
+      const body = {
+        currentUserId: user.uid,
+        userId: contact.uid,
+        isGroup: false,
+      };
+      const response = await conversationApiClient.postConversation(body);
+      console.log(response);
+      setCurrentConversation(response);
+    }
   };
 
   return (
@@ -32,4 +45,4 @@ const Contact = ({ contact }: ContactProps) => {
   );
 };
 
-export default Contact;
+export default UserBox;

@@ -53,6 +53,7 @@ erDiagram
         number id PK
         string name
         boolean isGroup
+        datetime lastMessageAt
         datetime createdAt
     }
     ConversationMember {
@@ -81,3 +82,7 @@ erDiagram
     Conversation ||--|{ ConversationMember: "contain"
     Message }o--|| Conversation: "belong to"
 ```
+
+## Sequence Diagram
+
+Show contact list

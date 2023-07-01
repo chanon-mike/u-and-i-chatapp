@@ -3,14 +3,18 @@ import { prismaClient } from "../../utils/prismaClient";
 
 export const userController = {
   // GET all user data
-  getAllUserData: async (req: Request, res: Response) => {
-    const allUserPrisma = await prismaClient.user.findMany({
-      orderBy: { displayName: "asc" },
-    });
-    return res.status(200).send(allUserPrisma);
+  getUsers: async (req: Request, res: Response) => {
+    try {
+      const users = await prismaClient.user.findMany({
+        orderBy: { createdAt: "desc" },
+      });
+      return res.status(200).send(users);
+    } catch (e) {
+      return res.status(400).send([]);
+    }
   },
   // GET specific user data
-  getUserData: async (req: Request<{ uid: string }>, res: Response) => {
+  getCurrentUser: async (req: Request<{ uid: string }>, res: Response) => {
     if (req.params && req.params.uid) {
       const userPrisma = await prismaClient.user.findFirst({
         where: { uid: req.params.uid },

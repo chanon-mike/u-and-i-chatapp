@@ -22,10 +22,11 @@ model User {
 }
 
 model Conversation {
-  id        Int      @id @default(autoincrement())
-  name      String
-  isGroup   Boolean
-  createdAt DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  name          String?
+  isGroup       Boolean
+  lastMessageAt DateTime @default(now())
+  createdAt     DateTime @default(now())
 
   members  ConversationMember[]
   messages Message[]

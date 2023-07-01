@@ -1,8 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { prismaClient } from "../../utils/prismaClient";
+import { ConversationMember } from "@prisma/client";
+
+type ConversationBody = {
+  currentUserId: string;
+  name: string;
+  userId: string;
+  isGroup: boolean;
+  members: ConversationMember;
+};
 
 export const conversationController = {
-  getconversation: async (
+  getConversation: async (
     req: Request<{}, {}, {}, { uid: string }>,
     res: Response,
     next: NextFunction
@@ -41,20 +50,133 @@ export const conversationController = {
       next(e);
     }
   },
-  // create a new conversation if existed, or add new member if not
-  createConversation: async (
-    req: Request,
+  getConversations: async (
+    req: Request<{}, {}, {}, { uid: string }>,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const conversation = await prismaClient.conversation.create({
-        data: {
-          name: "Test",
-          isGroup: false,
+      const uid = req.query.uid;
+      console.log(req.query);
+      if (!uid) return res.status(400).send("uid is required");
+      const conversations = await prismaClient.conversation.findMany({
+        orderBy: {
+          lastMessageAt: "desc",
+        },
+        where: {
+          members: {
+            some: {
+              userId: uid,
+            },
+          },
+        },
+        include: {
+          members: true,
+          messages: true,
         },
       });
-      return res.status(200).send(conversation);
+      console.log(conversations);
+      return res.status(200).send(conversations);
+    } catch (e) {
+      console.error(e);
+      next(e);
+    }
+  },
+  // create a new conversation if existed, or add new member if not
+  createConversation: async (
+    req: Request<ConversationBody>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { currentUserId, userId, isGroup, members, name } = req.body.body;
+      if (isGroup && (!members || members.length < 2 || !name)) {
+        return res.status(400).send("Invalid data");
+      }
+
+      // Create new group chat
+      if (isGroup) {
+        const newConversation = await prismaClient.conversation.create({
+          data: {
+            name,
+            isGroup,
+            members: {
+              connect: [
+                ...members.map((member: { value: string }) => ({
+                  userId: member.value,
+                })),
+                {
+                  userId: currentUserId,
+                },
+              ],
+            },
+          },
+          include: {
+            members: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        });
+        return res.status(200).send(newConversation);
+      }
+
+      // Check for existing conversation
+      const existingConversation = await prismaClient.conversation.findFirst({
+        where: {
+          AND: [
+            {
+              members: {
+                some: {
+                  user: {
+                    uid: currentUserId,
+                  },
+                },
+              },
+            },
+            {
+              members: {
+                some: {
+                  user: {
+                    uid: userId,
+                  },
+                },
+              },
+            },
+          ],
+        },
+        include: {
+          members: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      if (existingConversation) {
+        return res.status(200).send(existingConversation);
+      }
+
+      // Create new one-to-one conversation
+      const newConversation = await prismaClient.conversation.create({
+        data: {
+          isGroup: false,
+          members: {
+            createMany: {
+              data: [{ userId: currentUserId }, { userId }],
+            },
+          },
+        },
+        include: {
+          members: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      return res.status(200).send(newConversation);
     } catch (e) {
       console.error(e);
       next(e);

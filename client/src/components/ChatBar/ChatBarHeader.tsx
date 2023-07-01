@@ -5,14 +5,14 @@ import { BsFillChatFill, BsPeopleFill, BsPersonFillAdd, BsThreeDotsVertical } fr
 import { conversationApiClient } from '../../api/conversation';
 import { userApiClient } from '../../api/user';
 import { userAtom } from '../../atom/user';
-import type { ConversationWithMemberModel, UserModel } from '../../interfaces';
+import type { FullConversationModel, UserModel } from '../../interfaces';
 import GroupChatModal from '../Modal/GroupChatModal';
 import Avatar from '../common/Avatar';
 import { Loading } from '../common/Loading/Loading';
 
 type ChatBarHeaderProps = {
   setUserContactList: Dispatch<SetStateAction<UserModel[]>>;
-  setConversationList: Dispatch<SetStateAction<ConversationWithMemberModel[]>>;
+  setConversationList: Dispatch<SetStateAction<FullConversationModel[]>>;
 };
 
 const ChatBarHeader = ({ setUserContactList, setConversationList }: ChatBarHeaderProps) => {
