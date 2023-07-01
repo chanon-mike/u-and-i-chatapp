@@ -22,7 +22,6 @@ const UserBox = ({ contact }: UserBoxProps) => {
         isGroup: false,
       };
       const response = await conversationApiClient.postConversation(body);
-      console.log(response);
       setCurrentConversation(response);
     }
   };
@@ -38,7 +37,7 @@ const UserBox = ({ contact }: UserBoxProps) => {
       <div className="min-h-full flex flex-col justify-center mt-3 pr-2 w-full">
         <span className="text-primary">{contact.displayName}</span>
         <div className="pb-2 pt-1 w-full">
-          <span className="text-secondary line-clamp-1 text-sm">Latest chat</span>
+          <span className="text-secondary line-clamp-1 text-sm">Start a conversation</span>
         </div>
       </div>
     </div>

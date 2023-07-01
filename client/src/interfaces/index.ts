@@ -30,6 +30,12 @@ export interface ChatModel {
   createdAt: number;
 }
 
+export interface MssageSeenByUserModel {
+  id: number;
+  userId: UserModel['uid'];
+  messageId: ChatModel['id'];
+}
+
 export interface ConversationModel {
   id: number;
   name: string;
@@ -44,10 +50,16 @@ export interface ConversationMemberModel {
   conversationId: ConversationModel['id'];
 }
 
-export interface ConversationMemberWithUserModel extends ConversationMemberModel {
+export interface FullMessageModel extends ChatModel {
+  sender: UserModel;
+  seen: MssageSeenByUserModel[];
+}
+
+interface ConversationMemberWithUserModel extends ConversationMemberModel {
   user: UserModel;
 }
 
 export interface FullConversationModel extends ConversationModel {
   members: ConversationMemberWithUserModel[];
+  messages: FullMessageModel[];
 }

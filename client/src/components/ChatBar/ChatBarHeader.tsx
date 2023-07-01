@@ -29,7 +29,7 @@ const ChatBarHeader = ({ setUserContactList, setConversationList }: ChatBarHeade
   };
 
   const fetchCurrentUserConversation = async () => {
-    const response = await conversationApiClient.getCurrentUserConversation(user?.uid || '');
+    const response = await conversationApiClient.getConversations(user?.uid || '');
     console.log(response);
     if (response) {
       setUserContactList([]);

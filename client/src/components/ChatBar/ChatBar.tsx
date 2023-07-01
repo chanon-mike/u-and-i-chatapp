@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { FullConversationModel, UserModel } from '../../interfaces';
 import ChatListHeader from './ChatBarHeader';
+import ChatBarList from './ChatBarList';
 import SearchBar from './SearchBar';
-import UserList from './UserList';
 
 const ChatBar = () => {
   const [userList, setUserList] = useState<UserModel[]>([]);
@@ -16,7 +16,7 @@ const ChatBar = () => {
           setConversationList={setConversationList}
         />
         <SearchBar />
-        <UserList userList={userList} conversationList={conversationList} />
+        <ChatBarList userList={userList} conversationList={conversationList} />
       </div>
     </div>
   );

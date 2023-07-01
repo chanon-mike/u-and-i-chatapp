@@ -12,7 +12,7 @@ type conversationBody = {
 
 export const conversationApiClient = {
   // GET current user available conversation
-  getCurrentUserConversation: async (uid: string) => {
+  getConversations: async (uid: string) => {
     try {
       return await apiClient
         .get(conversationApiBase, {
