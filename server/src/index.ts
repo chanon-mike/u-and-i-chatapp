@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import userRoute from "./modules/user/user.route";
-import chatRoute from "./modules/chat/chat.route";
+import messageRoute from "./modules/message/message.route";
 import conversationRoute from "./modules/conversation/conversation.route";
 import { CORS_ORIGIN, PORT } from "./utils/envValues";
 import { decodeToken } from "./middlewares/firebaseAdmin";
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(decodeToken);
 
 app.use("/api/user", userRoute);
-app.use("/api/chat", chatRoute);
+app.use("/api/message", messageRoute);
 app.use("/api/conversation", conversationRoute);
 
 app.get("/", (req: Request, res: Response) => {

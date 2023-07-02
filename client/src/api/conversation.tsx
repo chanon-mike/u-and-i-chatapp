@@ -2,14 +2,6 @@ import type { ConversationMemberModel } from '../interfaces';
 import { apiClient, conversationApiBase } from '../utils/apiClient';
 import { returnNull } from '../utils/returnNull';
 
-type conversationBody = {
-  currentUserId: string;
-  userId: string;
-  name?: string;
-  isGroup: boolean;
-  members?: ConversationMemberModel;
-};
-
 export const conversationApiClient = {
   // GET current user available conversation
   getConversations: async (uid: string) => {
@@ -27,11 +19,17 @@ export const conversationApiClient = {
       return null;
     }
   },
-  postConversation: async (body: conversationBody) => {
+  postConversation: async (body: {
+    currentUserId: string;
+    userId: string;
+    name?: string;
+    isGroup: boolean;
+    members?: ConversationMemberModel;
+  }) => {
     try {
       return await apiClient
         .post(conversationApiBase, {
-          body,
+          ...body,
         })
         .then((res) => res.data)
         .catch(returnNull);

@@ -1,19 +1,14 @@
-import type { ChatModel } from '../interfaces';
-import { apiClient, chatApiBase } from '../utils/apiClient';
+import type { FullMessageModel, MessageModel } from '../interfaces';
+import { apiClient, messageApiBase } from '../utils/apiClient';
 import { returnNull } from '../utils/returnNull';
 
 // FIX THIS TO GET CHAT AND SEND IN A GROUP
-export const chatApiClient = {
+export const messageApiClient = {
   // GET all messages between from and to
-  getMessages: async (fromUid: string, toUid: string): Promise<ChatModel[] | null> => {
+  getMessages: async (conversationId: number): Promise<FullMessageModel[] | null> => {
     try {
       return await apiClient
-        .get(chatApiBase, {
-          params: {
-            fromUid,
-            toUid,
-          },
-        })
+        .get(`${messageApiBase}/${conversationId}`)
         .then((res) => res.data)
         .catch(returnNull);
     } catch (e) {
@@ -23,16 +18,17 @@ export const chatApiClient = {
   },
   // POST a new message
   sendMessage: async (
-    message: string,
-    fromUid: string,
-    toUid: string
-  ): Promise<ChatModel | null> => {
+    conversationId: number,
+    body: {
+      type: string;
+      message: string;
+      senderUid: string;
+    }
+  ): Promise<MessageModel | null> => {
     try {
       return await apiClient
-        .post(chatApiBase, {
-          message,
-          from: fromUid,
-          to: toUid,
+        .post(`${messageApiBase}/${conversationId}`, {
+          ...body,
         })
         .then((res) => res.data)
         .catch(returnNull);

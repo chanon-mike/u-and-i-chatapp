@@ -20,7 +20,7 @@ export interface UserModel {
   createdAt: number;
 }
 
-export interface ChatModel {
+export interface MessageModel {
   id: number;
   senderUid: UserModel['uid'];
   receiverUid: UserModel['uid'];
@@ -33,7 +33,7 @@ export interface ChatModel {
 export interface MssageSeenByUserModel {
   id: number;
   userId: UserModel['uid'];
-  messageId: ChatModel['id'];
+  messageId: MessageModel['id'];
 }
 
 export interface ConversationModel {
@@ -50,7 +50,7 @@ export interface ConversationMemberModel {
   conversationId: ConversationModel['id'];
 }
 
-export interface FullMessageModel extends ChatModel {
+export interface FullMessageModel extends MessageModel {
   sender: UserModel;
   seen: MssageSeenByUserModel[];
 }

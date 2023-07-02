@@ -2,54 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { prismaClient } from "../../utils/prismaClient";
 import { ConversationMember } from "@prisma/client";
 
-type ConversationBody = {
-  currentUserId: string;
-  name: string;
-  userId: string;
-  isGroup: boolean;
-  members: ConversationMember;
-};
-
 export const conversationController = {
-  getConversation: async (
-    req: Request<{}, {}, {}, { uid: string }>,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const uid = req.query.uid;
-      console.log(req.query);
-      if (uid) {
-        const conversation = await prismaClient.conversationMember.findMany({
-          where: {
-            conversation: {
-              members: {
-                some: {
-                  user: {
-                    uid,
-                  },
-                },
-              },
-            },
-            NOT: {
-              userId: {
-                equals: uid,
-              },
-            },
-          },
-          include: {
-            conversation: true,
-            user: true,
-          },
-        });
-        console.log(conversation);
-        return res.status(200).send(conversation);
-      }
-    } catch (e) {
-      console.error(e);
-      next(e);
-    }
-  },
+  // GET all conversations for current user
   getConversations: async (
     req: Request<{}, {}, {}, { uid: string }>,
     res: Response,
@@ -57,8 +11,8 @@ export const conversationController = {
   ) => {
     try {
       const uid = req.query.uid;
-      console.log(req.query);
       if (!uid) return res.status(400).send("uid is required");
+
       const conversations = await prismaClient.conversation.findMany({
         orderBy: {
           lastMessageAt: "desc",
@@ -71,8 +25,17 @@ export const conversationController = {
           },
         },
         include: {
-          members: true,
-          messages: true,
+          members: {
+            include: {
+              user: true,
+            },
+          },
+          messages: {
+            include: {
+              sender: true,
+              messageSeenByUser: true,
+            },
+          },
         },
       });
       console.log(conversations);
@@ -84,12 +47,18 @@ export const conversationController = {
   },
   // create a new conversation if existed, or add new member if not
   createConversation: async (
-    req: Request<ConversationBody>,
+    req: Request<{
+      currentUserId: string;
+      name: string;
+      userId: string;
+      isGroup: boolean;
+      members: ConversationMember;
+    }>,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const { currentUserId, userId, isGroup, members, name } = req.body.body;
+      const { currentUserId, userId, isGroup, members, name } = req.body;
       if (isGroup && (!members || members.length < 2 || !name)) {
         return res.status(400).send("Invalid data");
       }

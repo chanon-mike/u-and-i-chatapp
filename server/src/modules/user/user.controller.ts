@@ -6,7 +6,7 @@ export const userController = {
   getUsers: async (req: Request, res: Response) => {
     try {
       const users = await prismaClient.user.findMany({
-        orderBy: { createdAt: "desc" },
+        orderBy: { displayName: "asc" },
       });
       return res.status(200).send(users);
     } catch (e) {

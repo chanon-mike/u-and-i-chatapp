@@ -1,25 +1,29 @@
-import { useEffect, useState } from 'react';
-import { chatApiClient } from '../../api/chat';
-import type { ChatModel, UserModel } from '../../interfaces';
+import { useContext, useEffect, useState } from 'react';
+import { messageApiClient } from '../../api/message';
+import type { FullConversationModel, MessageModel } from '../../interfaces';
+import { Loading } from '../common/Loading/Loading';
+import { CurrentChatContext } from './Chat';
 
 type ChatContainerProps = {
-  user: UserModel;
-  currentChatUser: UserModel;
+  conversation: FullConversationModel;
 };
 
-const ChatContainer = ({ user, currentChatUser }: ChatContainerProps) => {
-  const [allMessage, setAllMessage] = useState<ChatModel[]>([]);
+const ChatContainer = ({ conversation }: ChatContainerProps) => {
+  const [allMessage, setAllMessage] = useState<MessageModel[]>([]);
+  const currentChatUser = useContext(CurrentChatContext);
 
   useEffect(() => {
     // Fetch messages
     const fetchMessages = async () => {
-      const response = await chatApiClient.getMessages(user.uid, currentChatUser.uid);
+      const response = await messageApiClient.getMessages(conversation.id);
       if (response) {
         setAllMessage(response);
       }
     };
     fetchMessages();
-  }, [user, currentChatUser]);
+  }, [conversation.id]);
+
+  if (!currentChatUser) return <Loading visible />;
 
   return (
     <div className="h-[80vh] w-full relative flex-grow overflow-auto custom-scrollbar">

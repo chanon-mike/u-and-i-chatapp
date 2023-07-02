@@ -40,19 +40,10 @@ const ConversationBox = ({ conversation }: ConversationBoxProps) => {
     return 'Started a conversation';
   }, [lastMessage]);
 
-  // Set
+  // Set current conversation to user click and get all chat in those conversation
   const handleChangeChat = useCallback(async () => {
-    if (user) {
-      // const body = {
-      //   currentUserId: user.uid,
-      //   userId: conversation.uid,
-      //   isGroup: false,
-      // };
-      // const response = await conversationApiClient.postConversation(body);
-      // console.log(response);
-      setCurrentConversation(conversation);
-    }
-  }, [conversation, setCurrentConversation, user]);
+    setCurrentConversation(conversation);
+  }, [conversation, setCurrentConversation]);
 
   return (
     <>

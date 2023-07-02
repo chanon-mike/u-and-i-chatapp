@@ -1,20 +1,25 @@
 import { NextFunction, Request, Response } from "express";
 import { prismaClient } from "../../utils/prismaClient";
 
-export const chatController = {
+export const messageController = {
   // GET all messages in conversation
-  getAllMessage: async (
-    req: Request<{ conversationId: number }>,
+  getMessages: async (
+    req: Request<{ conversationId: string }>,
     res: Response,
     next: NextFunction
   ) => {
     try {
+      const conversationId = parseInt(req.params.conversationId);
       const messages = await prismaClient.message.findMany({
         where: {
-          conversationId: req.params.conversationId,
+          conversationId: conversationId,
         },
         orderBy: {
-          id: "asc",
+          createdAt: "asc",
+        },
+        include: {
+          sender: true,
+          messageSeenByUser: true,
         },
       });
       return res.status(200).send(messages);
@@ -26,33 +31,34 @@ export const chatController = {
   // POST new message from senderUid to conversationId
   sendMessage: async (
     req: Request<
-      { conversationId: number },
-      { message: string; senderUid: string }
+      { conversationId: string },
+      { type: string; message: string; senderUid: string }
     >,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const conversationId = req.params.conversationId;
-      const { message, senderUid } = req.body;
+      const conversationId = parseInt(req.params.conversationId);
+      const { type, message, senderUid } = req.body;
 
-      if (conversationId && message && senderUid) {
+      if (type && message && conversationId && senderUid) {
         const newMessage = await prismaClient.message.create({
           data: {
+            type: type,
             message: message,
             conversation: { connect: { id: conversationId } },
             sender: { connect: { uid: senderUid } },
-            type: "text",
           },
           include: {
             sender: true,
+            messageSeenByUser: true,
           },
         });
-        return res.status(201).send({ message: newMessage });
+        return res.status(201).send(newMessage);
       }
       return res
         .status(400)
-        .send("conversationId, message and senderUid are required.");
+        .send("type, message, conversationId and senderUid are required.");
     } catch (e) {
       console.error(e);
       next(e);
