@@ -10,7 +10,7 @@ export type ContextMenuCordinates = {
 };
 
 // Type for model
-export type UserModel = {
+export interface UserModel {
   uid: string;
   displayName: string;
   email: string;
@@ -18,9 +18,9 @@ export type UserModel = {
   avatar: string;
   isOnline: boolean;
   createdAt: number;
-};
+}
 
-export type ChatModel = {
+export interface MessageModel {
   id: number;
   senderUid: UserModel['uid'];
   receiverUid: UserModel['uid'];
@@ -28,4 +28,38 @@ export type ChatModel = {
   message: string;
   messageStatus: string;
   createdAt: number;
-};
+}
+
+export interface MssageSeenByUserModel {
+  id: number;
+  userId: UserModel['uid'];
+  messageId: MessageModel['id'];
+}
+
+export interface ConversationModel {
+  id: number;
+  name: string;
+  isGroup: boolean;
+  lastMessageAt: number;
+  createdAt: number;
+}
+
+export interface ConversationMemberModel {
+  id: number;
+  userId: UserModel['uid'];
+  conversationId: ConversationModel['id'];
+}
+
+export interface FullMessageModel extends MessageModel {
+  sender: UserModel;
+  seen: MssageSeenByUserModel[];
+}
+
+interface ConversationMemberWithUserModel extends ConversationMemberModel {
+  user: UserModel;
+}
+
+export interface FullConversationModel extends ConversationModel {
+  members: ConversationMemberWithUserModel[];
+  messages: FullMessageModel[];
+}

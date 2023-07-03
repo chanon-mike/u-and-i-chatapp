@@ -16,27 +16,38 @@ model User {
   isOnline    Boolean
   createdAt   DateTime @default(now())
 
-  groups       GroupMember[]
-  sentMessages Message[]     @relation("sent")
-  seenMessages Message[]
+  conversations     ConversationMember[]
+  sentMessages      Message[]            @relation("sent")
+  messageSeenByUser MessageSeenByUser[]
 }
 
-model Group {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
+model Conversation {
+  id            Int      @id @default(autoincrement())
+  name          String?
+  isGroup       Boolean
+  lastMessageAt DateTime @default(now())
+  createdAt     DateTime @default(now())
 
-  members  GroupMember[]
+  members  ConversationMember[]
   messages Message[]
 }
 
-model GroupMember {
+model ConversationMember {
   id Int @id @default(autoincrement())
 
-  userId  String
-  user    User   @relation(fields: [userId], references: [uid])
-  groupId Int
-  group   Group  @relation(fields: [groupId], references: [id])
+  userId         String
+  user           User         @relation(fields: [userId], references: [uid])
+  conversationId Int
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+}
+
+model MessageSeenByUser {
+  id Int @id @default(autoincrement())
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [uid])
+  messageId Int
+  message   Message @relation(fields: [messageId], references: [id])
 }
 
 model Message {
@@ -45,9 +56,9 @@ model Message {
   message   String
   createdAt DateTime @default(now())
 
-  groupId   Int
-  group     Group  @relation(fields: [groupId], references: [id])
-  senderUid String
-  sender    User   @relation("sent", fields: [senderUid], references: [uid])
-  seenBy    User[]
+  conversationId    Int
+  conversation      Conversation        @relation(fields: [conversationId], references: [id])
+  senderUid         String
+  sender            User                @relation("sent", fields: [senderUid], references: [uid])
+  messageSeenByUser MessageSeenByUser[]
 }

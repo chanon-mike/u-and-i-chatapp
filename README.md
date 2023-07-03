@@ -29,6 +29,7 @@ This is a real-time chat application built as my capstone project
 - [ ] Photo taken with webcam in onboarding page aspect ratio is 4:3, but user icon is in 1:1. Need to crop image.
 - [ ] Routing page for onboarding, login and main page are currently bug. Will fix it after finish most of chat
 - [ ] Maybe delete onboarding page and let user set their own profile later(?)
+- [ ] Time sent need be format for ChatContainer
 
 ## Built with
 
@@ -40,12 +41,6 @@ Planned to use ZEGOCLOUD or WebRTC for video call
 
 ```mermaid
 erDiagram
-    User ||--o{ GroupMember: "belong to"
-    User ||--o{ Message: "send message"
-    User ||--o{ Message: "seen message"
-    Group ||--o{ GroupMember: "contain"
-    Message }o--|| Group: "belong to"
-
     User {
         string uid PK
         string displayName
@@ -55,22 +50,40 @@ erDiagram
         boolean isOnline
         datetime createdAt
     }
-    Group {
+    Conversation {
         number id PK
         string name
+        boolean isGroup
+        datetime lastMessageAt
         datetime createdAt
     }
-    GroupMember {
+    ConversationMember {
         number id PK
-        number groupId FK
+        number conversationId FK
         string userId FK
+    }
+    MessageSeenByUser {
+        number id PK
+        string userId FK
+        number messageId FK
     }
     Message {
         number id PK
-        number groupId FK
+        number conversationId FK
         string senderUid FK
         string type
         string message
         datetime createdAt
     }
+
+    User ||--o{ ConversationMember: "belong to"
+    User ||--o{ Message: "send message"
+    User ||--o{ MessageSeenByUser: "seen"
+    MessageSeenByUser o{--|| Message: "is seen by"
+    Conversation ||--|{ ConversationMember: "contain"
+    Message }o--|| Conversation: "belong to"
 ```
+
+## Sequence Diagram
+
+Show contact list

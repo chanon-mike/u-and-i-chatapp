@@ -1,13 +1,15 @@
+import { useContext } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import { MdCall, MdSearch, MdVideocam } from 'react-icons/md';
-import type { UserModel } from '../../interfaces';
 import Avatar from '../common/Avatar';
+import { Loading } from '../common/Loading/Loading';
+import { CurrentChatContext } from './Chat';
 
-type ChatHeaderProps = {
-  currentChatUser: UserModel;
-};
+const ChatHeader = () => {
+  const currentChatUser = useContext(CurrentChatContext);
 
-const ChatHeader = ({ currentChatUser }: ChatHeaderProps) => {
+  if (!currentChatUser) return <Loading visible />;
+
   return (
     <div className="h-16 px-4 py-3 w-full flex justify-between items-center bg-light-shade z-10 shadow-sm ">
       <div className="flex items-center justify-center gap-6">

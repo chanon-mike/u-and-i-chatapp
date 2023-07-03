@@ -1,11 +1,41 @@
 import { useAtom } from 'jotai';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import type { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
+import { BsFillChatFill, BsPeopleFill, BsPersonFillAdd, BsThreeDotsVertical } from 'react-icons/bs';
+import { conversationApiClient } from '../../api/conversation';
+import { userApiClient } from '../../api/user';
 import { userAtom } from '../../atom/user';
+import type { FullConversationModel, UserModel } from '../../interfaces';
+import GroupChatModal from '../Modal/GroupChatModal';
 import Avatar from '../common/Avatar';
 import { Loading } from '../common/Loading/Loading';
 
-const ChatBarHeader = () => {
+type ChatBarHeaderProps = {
+  setUserContactList: Dispatch<SetStateAction<UserModel[]>>;
+  setConversationList: Dispatch<SetStateAction<FullConversationModel[]>>;
+};
+
+const ChatBarHeader = ({ setUserContactList, setConversationList }: ChatBarHeaderProps) => {
   const [user] = useAtom(userAtom);
+  const [showGroupChatModal, setShowGroupChatModal] = useState<boolean>(false);
+
+  const fetchAllUser = async () => {
+    const response = await userApiClient.getAllUserData();
+    console.log(response);
+    if (response) {
+      setUserContactList(response);
+      setConversationList([]);
+    }
+  };
+
+  const fetchCurrentUserConversation = async () => {
+    const response = await conversationApiClient.getConversations(user?.uid || '');
+    console.log(response);
+    if (response) {
+      setUserContactList([]);
+      setConversationList(response);
+    }
+  };
 
   if (!user) return <Loading visible />;
 
@@ -15,9 +45,21 @@ const ChatBarHeader = () => {
         <Avatar type="sm" image={user.avatar} />
       </div>
       <div className="flex gap-4">
+        <BsFillChatFill
+          className="text-main cursor-pointer text-xl"
+          onClick={fetchCurrentUserConversation}
+        />
+        <BsPeopleFill className="text-main cursor-pointer text-xl" onClick={fetchAllUser} />
+        <BsPersonFillAdd
+          className="text-main cursor-pointer text-xl"
+          onClick={() => setShowGroupChatModal(true)}
+        />
         <BsThreeDotsVertical className="text-main cursor-pointer text-xl" />
       </div>
-      {/* <span className="text-white">{user.displayName}</span> */}
+      <GroupChatModal
+        showGroupChatModal={showGroupChatModal}
+        setShowGroupChatModal={setShowGroupChatModal}
+      />
     </div>
   );
 };

@@ -1,20 +1,31 @@
-import { useState } from 'react';
+import { useAtom } from 'jotai';
+import { useContext, useState } from 'react';
 import { BsEmojiSmile, BsImage, BsMicFill } from 'react-icons/bs';
 import { IoMdSend } from 'react-icons/io';
-import { chatApiClient } from '../../api/chat';
-import type { UserModel } from '../../interfaces';
+import { messageApiClient } from '../../api/message';
+import { userAtom } from '../../atom/user';
+import type { FullConversationModel } from '../../interfaces';
+import { CurrentChatContext } from './Chat';
 
-type MessageBarProps = {
-  user: UserModel;
-  currentChatUser: UserModel;
+type ChatContainerProps = {
+  conversation: FullConversationModel;
 };
 
-const MessageBar = ({ user, currentChatUser }: MessageBarProps) => {
+const MessageBar = ({ conversation }: ChatContainerProps) => {
+  const currentChatUser = useContext(CurrentChatContext);
+  const [user] = useAtom(userAtom);
   const [message, setMessage] = useState<string>('');
 
   // Send a new message
   const sendMessage = async () => {
-    await chatApiClient.sendMessage(message, user.uid, currentChatUser.uid);
+    if (user && currentChatUser) {
+      const body = {
+        type: 'text',
+        message,
+        senderUid: user.uid,
+      };
+      await messageApiClient.sendMessage(conversation.id, body);
+    }
   };
 
   return (
