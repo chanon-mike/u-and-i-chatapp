@@ -48,12 +48,45 @@ export const messageController = {
             message: message,
             conversation: { connect: { id: conversationId } },
             sender: { connect: { uid: senderUid } },
+            messageSeenByUser: {
+              create: {
+                userId: senderUid,
+              },
+            },
           },
           include: {
             sender: true,
             messageSeenByUser: true,
           },
         });
+
+        // Data used to update with websocket
+        const updatedConversation = prismaClient.conversation.update({
+          where: {
+            id: conversationId,
+          },
+          data: {
+            lastMessageAt: new Date(),
+            messages: {
+              connect: {
+                id: newMessage.id,
+              },
+            },
+          },
+          include: {
+            members: {
+              include: {
+                user: true,
+              },
+            },
+            messages: {
+              include: {
+                messageSeenByUser: true,
+              },
+            },
+          },
+        });
+
         return res.status(201).send(newMessage);
       }
       return res
